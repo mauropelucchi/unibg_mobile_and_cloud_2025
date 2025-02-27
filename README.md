@@ -1,11 +1,11 @@
-# University of Bergamo - Mobile and Cloud Technologies 2024
+# University of Bergamo - Mobile and Cloud Platforms 2025
 
-This repository contains code and data for the Apps developed during the Mobile & Cloud Technologies Course @ University of Bergamo (2024).
+This repository contains code and data for the Apps developed during the Mobile & Cloud Platforms Course @ University of Bergamo (2025).
 
 
 # MyTEDx Project
 
-MyTEDx is the project explained and builded during the Mobile & Cloud Technologies Course @ University of Bergamo.
+MyTEDx is the project explained and builded during the Mobile & Cloud Platforms Course @ University of Bergamo.
 It is a complete server-less project based on AWS Services and Flutter.
 The project is composed by:
 - a stack (infrastructure as code examole)
@@ -18,7 +18,7 @@ The project is composed by:
 
 # MIT License
 
-Copyright (c) 2024 Mauro Pelucchi
+Copyright (c) 2025 Mauro Pelucchi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
