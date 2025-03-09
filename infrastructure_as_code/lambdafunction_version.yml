@@ -31,25 +31,25 @@ Resources:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     Properties:
-      BucketName: "tedx-2024-data"
+      BucketName: "tedx-2025-data-mp"
 
   ScriptS3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     Properties:
-      BucketName: "tedx-2024-script"
+      BucketName: "tedx-2025-script-mp"
 
   LogsS3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     Properties:
-      BucketName: "tedx-2024-logs"
+      BucketName: "tedx-2025-logs-mp"
 
   HelloLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: HelloLambdaFunction
-      Role: "arn:aws:iam::211125579531:role/LabRole"
+      Role: "arn:aws:iam::424145583236:role/LabRole"
       Runtime: python3.11
       Handler: index.my_handler
       Code:

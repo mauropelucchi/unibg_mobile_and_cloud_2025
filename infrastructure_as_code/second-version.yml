@@ -31,10 +31,10 @@ Resources:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     Properties:
-      BucketName: "tedx-2024-data"
+      BucketName: "tedx-2025-data-mp"
 
   ScriptS3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     Properties:
-      BucketName: "tedx-2024-script"
+      BucketName: "tedx-2025-script-mp"
