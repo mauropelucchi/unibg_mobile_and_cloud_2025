@@ -14,7 +14,7 @@ module.exports = connect_to_db = () => {
     }
  
     console.log('=> using new database connection');
-    return mongoose.connect(process.env.DB, {dbName: 'unibg_tedx_2024', useNewUrlParser: true, useUnifiedTopology: true}).then(db => {
+    return mongoose.connect(process.env.DB, {dbName: 'unibg_tedx_2025', useNewUrlParser: true, useUnifiedTopology: true}).then(db => {
         isConnected = db.connections[0].readyState;
     });
 };
