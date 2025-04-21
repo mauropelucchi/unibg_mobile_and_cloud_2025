@@ -2,49 +2,62 @@ const connect_to_db = require('./db');
 
 // GET BY TALK HANDLER
 
+const analyzeKeyPhrases = require('./localNLP');
 const talk = require('./Talk');
 
-module.exports.get_by_tag = (event, context, callback) => {
+
+module.exports.get_by_tag = async (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
     console.log('Received event:', JSON.stringify(event, null, 2));
-    let body = {}
+    
+    let body = {};
     if (event.body) {
-        body = JSON.parse(event.body)
+        body = JSON.parse(event.body);
     }
-    // set default
-    if(!body.tag) {
-        callback(null, {
-                    statusCode: 500,
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: 'Could not fetch the talks. Tag is null.'
-        })
+
+    if (!body.tag) {
+        return callback(null, {
+            statusCode: 500,
+            headers: { 'Content-Type': 'text/plain' },
+            body: 'Could not fetch the talks. Tag is null.'
+        });
     }
-    
-    if (!body.doc_per_page) {
-        body.doc_per_page = 10
-    }
-    if (!body.page) {
-        body.page = 1
-    }
-    
-    connect_to_db().then(() => {
+
+    body.doc_per_page = body.doc_per_page || 10;
+    body.page = body.page || 1;
+
+    try {
+        await connect_to_db();
         console.log('=> get_all talks');
-        talk.find({tags: body.tag})
+
+        const talks = await talk.find({ tags: body.tag })
             .skip((body.doc_per_page * body.page) - body.doc_per_page)
-            .limit(body.doc_per_page)
-            .then(talks => {
-                    callback(null, {
-                        statusCode: 200,
-                        body: JSON.stringify(talks)
-                    })
+            .limit(body.doc_per_page);
+
+        const enrichedTalks = await Promise.all(talks.map(async t => {
+            if (!t.comprehend_analysis && t.description) {
+                try {
+                    const analysis = await analyzeKeyPhrases(t.description);
+                    t.comprehend_analysis = analysis;
+                    await t.save();
+                } catch (err) {
+                    console.error(`Comprehend error on talk ${t._id}:`, err);
                 }
-            )
-            .catch(err =>
-                callback(null, {
-                    statusCode: err.statusCode || 500,
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: 'Could not fetch the talks.'
-                })
-            );
-    });
+            }
+            return t;
+        }));
+
+        return callback(null, {
+            statusCode: 200,
+            body: JSON.stringify(enrichedTalks)
+        });
+
+    } catch (err) {
+        console.error('Error fetching talks:', err);
+        return callback(null, {
+            statusCode: err.statusCode || 500,
+            headers: { 'Content-Type': 'text/plain' },
+            body: 'Could not fetch the talks.'
+        });
+    }
 };
